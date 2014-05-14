@@ -1,6 +1,7 @@
 # UNRELEASED
 
   * preserve "falsey" values for `.get`
+  * switch to {{ }} for templates. This is more versatile.
 
 # 1.2.0 (2014-07-20)
 
