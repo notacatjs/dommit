@@ -20,9 +20,9 @@
   <li data-editable='/item/3'>Three</li>
 </ul>
 
-<script src="./reactive.js"></script>
+<script src="./dommit.js"></script>
 <script>
-  var view = reactive(document.querySelector('ul'));
+  var view = Dommit(document.querySelector('ul'));
   view.bind('data-editable', function(el, url){
     el.setAttribute('contenteditable', 'true');
     el.onblur = function(){

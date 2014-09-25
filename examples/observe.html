@@ -11,13 +11,13 @@
 </style>
 
 <div class="user">
-  <h1>{first} {last}</h1>
-  <p>{first} is a {occupation}, {sex} is {age} years old.</p>
+  <h1>{{first}} {{last}}</h1>
+  <p>{{first}} is a {{occupation}}, {{sex}} is {{age}} years old.</p>
 </div>
 
-<script src="./reactive"></script>
+<script src="./dommit"></script>
 <script>
-  var reactive = require('reactive');
+  var Dommit = require('dommit');
   var Emitter = require('emitter');
   var tmpl = document.querySelector('.user');
   tmpl.parentNode.removeChild(tmpl);
@@ -30,7 +30,7 @@
   User.prototype.view = function(){
     var self = this;
     var el = tmpl.cloneNode(true);
-    var view = reactive(el, this);
+    var view = Dommit(el, this);
     Object.observe(this, function(changes){
       for (var i = 0; i < changes.length; i++) {
         var change = changes[i];

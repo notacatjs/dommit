@@ -1,4 +1,4 @@
-# reactive [![Build Status](https://travis-ci.org/component/reactive.svg?branch=master)](https://travis-ci.org/component/reactive)
+# dommit [![Build Status](https://travis-ci.org/notacatjs/dommit.svg?branch=master)](https://travis-ci.org/notacatjs/dommit)
 
  Simple and Flexible template and view binding engine with support for custom bindings and real-time updates on model changes.
 
@@ -6,7 +6,7 @@
 
 With npm via [browserify](http://browserify.org/):
 ```
-$ npm install reactive
+$ npm install dommit
 ```
 
 ## Quickstart
@@ -14,7 +14,7 @@ $ npm install reactive
 Rendering a basic html template with a predefined data model.
 
 ```js
-var view = reactive('<p>Hello {name}!</p>', {
+var view = Dommit('<p>Hello {{name}}!</p>', {
   name: 'Adam'
 });
 
@@ -29,7 +29,7 @@ document.body.appendChild(view.el);
 
 ### Handling events
 
-Reactive provides an easy way to register handlers for dom events via predefined "bindings".
+Dommit provides an easy way to register handlers for dom events via predefined "bindings".
 
 ```js
 var handlers = {
@@ -39,24 +39,24 @@ var handlers = {
 };
 
 var template = '<button on-click="clickme">clickme</button>';
-var view = reactive(template, {}, {
+var view = Dommit(template, {}, {
   delegate: handlers
 });
 ```
 
-A recommended approach is to wrap the `reactive` instance inside of your own *View* classes. See the [Views]() example.
+A recommended approach is to wrap the Dommit instance inside of your own *View* classes. See the [Views]() example.
 
 ### Iteration
 
 Iteration is achieved by using the `each` binding on the element you wish to iterate.
 
 ```js
-var template = '<ul><li each="people">{this}</li></ul>';
+var template = '<ul><li each="people">{{this}}</li></ul>';
 var model = {
   people: ['Sally', 'Billy']
 };
 
-var view = reactive(template, model);
+var view = Dommit(template, model);
 ```
 
 ```html
@@ -87,9 +87,9 @@ Using the following html template.
 
 ```js
 var tmpl = '<p data-hidden="items.length">no items</p>' +
-  '<ul data-visible="items.length"><li each="items">{this}</li></ul>';
+  '<ul data-visible="items.length"><li each="items">{{this}}</li></ul>';
 var model = { items: [] };
-var view = reactive(tmpl, model);
+var view = Dommit(tmpl, model);
 ```
 
 When rendering the above, we will see `no items`, because the array is empty.
@@ -103,9 +103,9 @@ Will change the output to `· one` and hide `no items`. Notice how `data-visible
 
 ## API
 
-### reactive(string | element, model, [options])
+### Dommit(string | element, model, [options])
 
-Create a new reactive instance using `string` or `element` as the template and `model` as the data object. This binds a DOM element to a model.
+Create a new dommit instance using `string` or `element` as the template and `model` as the data object. This binds a DOM element to a model.
 
 If you do not have a data model and want to specify options, you can pass `null` or `{}`. Remember you **must** have this argument before the options argument.
 
@@ -114,7 +114,7 @@ Options
 | option | type | description |
 | --- | --- | --- |
 | delegate | object, instance | an object or instance defining overrides and handlers for properties and events |
-| adapter | function | defines how reactive will interact with the model to listen for changes |
+| adapter | function | defines how dommit will interact with the model to listen for changes |
 | bindings | object | define custom bindings (see bindings docs below) |
 
 Bind `object` to the given `element` with optional `view` object. When a `view` object is present it will be checked first for overrides, which otherwise delegate to the model `object`.
@@ -139,19 +139,19 @@ Create a new binding called `name` defined by `fn`. See the [writing bindings](#
 
 ### use(fn)
 
-Use a reactive plugin. `fn` is invoked immediately and passed the reactive instance.
+Use a dommit plugin. `fn` is invoked immediately and passed the dommit instance.
 
 ### destroy()
 
-Destroy the reactive instance. This will remove all event listeners on the instance as well as remove the element from the dom.
+Destroy the dommit instance. This will remove all event listeners on the instance as well as remove the element from the dom.
 
 Fires a `destroyed` event upon completion.
 
 ## Model Adapters
 
-Model Adapters provide the interface for reactive to interact with your model implementation. By using a custom adapter you can support models from [backbone.js](http://backbonejs.org/#Model), [modella](https://github.com/modella/modella), [bamboo](https://github.com/defunctzombie/bamboo), etc..
+Model Adapters provide the interface for Dommit to interact with your model implementation. By using a custom adapter you can support models from [backbone.js](http://backbonejs.org/#Model), [modella](https://github.com/modella/modella), [bamboo](https://github.com/defunctzombie/bamboo), etc..
 
-You can make reactive compatible with your favorite model layer by creating a custom adapter. Changes to your model will cause the reactive view to update dynamically. The following API is required for all adapters.
+You can make Dommit compatible with your favorite model layer by creating a custom adapter. Changes to your model will cause the view to update dynamically. The following API is required for all adapters.
 
 ### constructor
 
@@ -192,7 +192,7 @@ Unsubscribe from changes for the given property. The `fn` should no longer be ca
 
 ### unsubscribeAll
 
-Unsubscribe all property change events. Used when a reactive instance is being torn down.
+Unsubscribe all property change events. Used when an instance is being torn down.
 
 ### set(prop, val)
 
@@ -209,7 +209,7 @@ Get the value for property `prop`
 
 ## Plugins
 
-Custom bindings to extend reactive are listed on the [plugins wiki page](https://github.com/component/reactive/wiki#plugins)
+Custom bindings to extend Dommit are listed on the [plugins wiki page](https://github.com/notacatjs/dommit/wiki#plugins)
 
 
 ## Interpolation
@@ -219,7 +219,7 @@ Custom bindings to extend reactive are listed on the [plugins wiki page](https:/
 
 ```html
 <article>
-  <h2>{name}</h2>
+  <h2>{{name}}</h2>
 </article>
 ```
 
@@ -228,8 +228,8 @@ Custom bindings to extend reactive are listed on the [plugins wiki page](https:/
 
 ```html
 <article>
-  <h2>{ name || 'Untitled' }</h2>
-  <p>Summary: { body.slice(0, 10) }</p>
+  <h2>{{ name || 'Untitled' }}</h2>
+  <p>Summary: {{ body.slice(0, 10) }}</p>
 </article>
 ```
 
@@ -237,21 +237,21 @@ Custom bindings to extend reactive are listed on the [plugins wiki page](https:/
  react to any of their changes:
 
 ```html
-<p>Welcome { first + ' ' + last }.</p>
+<p>Welcome {{ first + ' ' + last }}.</p>
 ```
 
  Interpolation works for attributes as well, reacting to changes as you'd expect:
 
 ```html
-<li class="file-{id}">
-  <h3>{filename}</h3>
-  <p><a href="/files/{id}/download">Download {filename}</a></p>
+<li class="file-{{id}}">
+  <h3>{{filename}}</h3>
+  <p><a href="/files/{{id}}/download">Download {{filename}}</a></p>
 <li>
 ```
 
 ## Declarative Bindings
 
-  By default reactive supplies bindings for setting properties, listening to events, toggling visibility, appending and replacing elements. Most of these start with "data-*" however this is not required.
+By default bindings for setting properties, listening to events, toggling visibility, appending and replacing elements. Most of these start with "data-*" however this is not required.
 
 ### data-text
 
@@ -275,7 +275,7 @@ The `each` binding allows you to iterate a collection of objects within the mode
 
 ```html
 <ul>
-  <li each="children">{name}</li>
+  <li each="children">{{name}}</li>
 </ul>
 ```
 
@@ -299,7 +299,7 @@ var delegate = {
   }
 }
 
-reactive(template, model, {
+Dommit(template, model, {
   delegate: delegate
 });
 ```
@@ -367,7 +367,7 @@ function removeIf(el, property){
 };
 
 var template = '<span remove-if="name">no name</span>';
-var view = reactive(template, { name: 'foobar' }, {
+var view = Dommit(template, { name: 'foobar' }, {
  bindings: {
   'remove-if': removeIf
  }
@@ -380,7 +380,7 @@ Here is another binding which uses [momentjs](http://momentjs.com/) to pretty pr
 
 ```js
 var template = '<span moment="timestamp" format="MMM Do YY"></span>';
-var view = reactive(template, { timestamp: new Date() }, {
+var view = Dommit(template, { timestamp: new Date() }, {
  bindings: {
   'moment': momentFormat
  }
@@ -409,7 +409,7 @@ You can easily re-use such bindings by making them plugins and enabling them on 
 
 
  ```html
- <a data-href="/download/{id}" data-text="Download {filename}"></a>
+ <a data-href="/download/{{id}}" data-text="Download {{filename}}"></a>
  ```
 
 ## Notes
@@ -427,9 +427,7 @@ You can easily re-use such bindings by making them plugins and enabling them on 
 ```
 
 ```js
-var reactive = require('reactive');
-
-var view = reactive(document.querySelector('.login'), {}, {
+var view = Dommit(document.querySelector('.login'), {}, {
  bindings: {
   autosubmit: autosubmit
  }
@@ -452,7 +450,7 @@ Typically a view object wraps a model to provide additional functionality, this 
 ```js
 function UserView(user) {
   this.user = user;
-  this.view = reactive(tmpl, user, {
+  this.view = Dommit(tmpl, user, {
     delegate: this
   });
 }

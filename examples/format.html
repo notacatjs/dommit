@@ -12,10 +12,10 @@
 
 <div id="user">
   <h2>{first}</h2>
-  <p><span>{fullname}</span> was born on <span data-date="birthdate" format="%Y %d"></span>. Check out his webpage at <a href="{url}" data-url-text="url"></a></p>
+  <p><span>{fullname}</span> was born on <span data-date="birthdate" format="%Y %d"></span>. Check out his webpage at <a href="{{url}}" data-url-text="url"></a></p>
 </div>
 
-<script src="./reactive.js"></script>
+<script src="./dommit.js"></script>
 <script>
   var tmpl = document.querySelector('#user');
 
@@ -28,7 +28,7 @@
 
   function UserView(user) {
     this.user = user;
-    var view = reactive(tmpl, user, {
+    var view = Dommit(tmpl, user, {
         delegate: this
     });
     view.bind('data-date', function(el, prop) {

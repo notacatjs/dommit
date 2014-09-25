@@ -13,23 +13,23 @@
 
 <div id="pet">
   <h2 data-text="name"></h2>
-  <p><span data-text="name">name</span> is a <span data-text="age">age</span> year old <span data-text="species"></span>, he has {friends.length} friends.</p>
+  <p><span data-text="name">name</span> is a <span data-text="age">age</span> year old <span data-text="species"></span>, he has {{friends.length}} friends.</p>
 </div>
 
 <form id="edit-pet">
   <legend>Edit</legend>
   <p>
-    <input type="text" name="name" value="{name}" placeholder="Name" on-input="updateName" />
+    <input type="text" name="name" value="{{name}}" placeholder="Name" on-input="updateName" />
   </p>
   <p>
-    <input type="text" name="age" value="{age}" placeholder="Age" on-change="updateAge" />
+    <input type="text" name="age" value="{{age}}" placeholder="Age" on-change="updateAge" />
   </p>
   <p>
     <input type="range" min="0" max="10" value="2" name="friends" on-change="updateFriends" />
   </p>
 </form>
 
-<script src="./reactive.js"></script>
+<script src="./dommit.js"></script>
 <script>
   var Emitter = require('emitter');
   var reactive = require('reactive');

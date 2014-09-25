@@ -14,11 +14,11 @@
 <script src="http://backbonejs.org/backbone-min.js"></script>
 
 <div class="view">
-  <h1>Hi {name || 'Unknown'}</h1>
-  <p>You are {age || 0} years old</p>
+  <h1>Hi {{name || 'Unknown'}}</h1>
+  <p>You are {{age || 0}} years old</p>
 </div>
 
-<script src="./reactive.js"></script>
+<script src="./dommit.js"></script>
 <script>
 var User = Backbone.Model.extend();
 var user = new User({
@@ -52,7 +52,7 @@ Adapter.prototype.get = function(prop) {
 // bind
 
 var el = document.querySelector('.view');
-reactive(el, user, {
+Dommit(el, user, {
     adapter: Adapter
 })
 

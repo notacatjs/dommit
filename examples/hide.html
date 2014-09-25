@@ -15,19 +15,19 @@
 </style>
 
 <div class="item">
-  <h1 class="title">{title}</h1>
-  <p class="description">{description}</p>
+  <h1 class="title">{{title}}</h1>
+  <p class="description">{{description}}</p>
 
   <p data-visible='hasDownloads'>
-    Click here to <a href="{filename}">Download</a>.
+    Click here to <a href="{{filename}}">Download</a>.
   </p>
 
   <p data-hidden='hasDownloads'>
-    No downloads available for <span>{title}</span> at the moment!.
+    No downloads available for <span>{{title}}</span> at the moment!.
   </p>
 </div>
 
-<script src="./reactive.js"></script>
+<script src="./dommit.js"></script>
 <script>
   var tmpl = document.querySelector('.item');
   document.body.removeChild(tmpl);
@@ -40,7 +40,7 @@
   function ItemView(item) {
     this.item = item;
     this.el = tmpl.cloneNode(true);
-    var view = reactive(this.el, item, {
+    var view = Dommit(this.el, item, {
         delegate: this
     });
   }

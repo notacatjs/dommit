@@ -21,11 +21,11 @@
 <br>
 
 <article>
-  <h1>{ title || 'Untitled' }</h1>
-  <p>{ description } <strong>{views} views</strong></p>
+  <h1>{{ title || 'Untitled' }}</h1>
+  <p>{{ description }} <strong>{{views}} views</strong></p>
 </article>
 
-<script src="./reactive.js"></script>
+<script src="./dommit.js"></script>
 <script>
   //var Emitter = require('emitter');
   //var reactive = require('reactive');
@@ -60,7 +60,7 @@
 
   while (n--) {
     var clone = el.cloneNode(true);
-    var view = reactive(clone, init);
+    var view = Dommit(clone, init);
     views.push(view);
     document.body.appendChild(clone);
   }
