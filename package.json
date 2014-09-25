@@ -1,9 +1,8 @@
 {
-  "name": "reactive",
-  "description": "Reactive template engine with data bindings",
+  "name": "dommit",
+  "description": "small template engine with data bindings, iteration, and adapters",
   "version": "1.2.0",
   "keywords": [
-    "reactive",
     "template",
     "engine",
     "data",
@@ -18,8 +17,7 @@
     "domify": "1.2.1",
     "emitter-component": "1.1.1",
     "event-component": "0.1.0",
-    "query-component": "0.0.1",
-    "reactive-ie8-shims": "^0.1.2"
+    "query-component": "0.0.1"
   },
   "browser": {
     "classes": "classes-component",
