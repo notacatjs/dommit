@@ -4,11 +4,6 @@
 
 ## Installation
 
-With component:
-```
-$ component install component/reactive
-```
-
 With npm via [browserify](http://browserify.org/):
 ```
 $ npm install reactive
