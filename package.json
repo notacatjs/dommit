@@ -32,8 +32,8 @@
     "better-assert": "~1.0.0",
     "clone-component": "component/clone#acfb79aa",
     "mocha": "~1.17.0",
-    "reactive-ie8-shims": "^0.1.1",
-    "zuul": "~1.5.4"
+    "reactive-ie8-shims": "~0.1.2",
+    "zuul": "~1.11.0"
   },
   "scripts": {
     "test": "zuul -- test/*.js",

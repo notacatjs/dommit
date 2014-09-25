@@ -169,7 +169,7 @@ describe('each', function(){
   });
 
   it('Array#pop', function(){
-    var el = domify('<ul><li each="todos">{this}</li></ul>');
+    var el = domify('<ul><li each="todos">{{this}}</li></ul>');
 
     var model = {
       todos: ['milk','cereal','apples']
@@ -202,7 +202,7 @@ describe('each', function(){
   });
 
   it('Array#shift', function(){
-    var el = domify('<ul><li each="todos">{this}</li></ul>');
+    var el = domify('<ul><li each="todos">{{this}}</li></ul>');
 
     var model = {
       todos: ['milk','cereal','apples']
@@ -233,7 +233,7 @@ describe('each', function(){
   });
 
   it('Array#sort', function(){
-    var el = domify('<ul><li each="todos">{this}</li></ul>');
+    var el = domify('<ul><li each="todos">{{this}}</li></ul>');
 
     var model = {
       todos: [0,9,8,7,6,1,2,3,4,5]
@@ -266,7 +266,7 @@ describe('each', function(){
   });
 
   it('Array#reverse', function(){
-    var el = domify('<ul><li each="todos">{this}</li></ul>');
+    var el = domify('<ul><li each="todos">{{this}}</li></ul>');
 
     var model = {
       todos: [0,9,8,7,6,1,2,3,4,5]
@@ -390,7 +390,7 @@ describe('each', function(){
   })
 
   it('should update when array is a nested property', function(){
-    var el = domify('<ul><li each="nested.arr">{this}</li></ul>');
+    var el = domify('<ul><li each="nested.arr">{{this}}</li></ul>');
 
     var model = { nested: { arr: ['a', 'b'] } };
 
