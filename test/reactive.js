@@ -85,9 +85,9 @@ describe('reactive(el, obj)', function(){
     assert('ok' == view.el.textContent);
   })
 
-  it('should support falsy properties', function(){
+  it('should support falsey properties', function(){
     var model = { zero: 0, nil: null, empty: '' };
-    var view = reactive(domify('<div class="{ empty }">{ zero }</div>'), model);
+    var view = reactive(domify('<div class="{{empty}}">{{zero}}</div>'), model);
     assert('0' === view.el.textContent);
     assert('' === view.el.getAttribute('class'));
     assert(null === view.get('nil'));
