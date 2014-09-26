@@ -166,7 +166,7 @@ describe('.set(prop, value)', function(){
   });
 
   it('should support setting parent property of a nested property', function() {
-    var el = domify('<div>{user.name} {user.age}</div>');
+    var el = domify('<div>{{user.name}} {{user.age}}</div>');
 
     var view = reactive(el, { user: { name: 'Keith', age: 45 } });
     assert.equal(el.textContent, 'Keith 45');
