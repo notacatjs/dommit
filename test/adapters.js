@@ -73,17 +73,17 @@ describe('custom adapter', function() {
   });
 
   it('setting obj[prop] should update view', function() {
-    reactive(el, person, {
+    reactive(person, {
       adapter: BackboneAdapter
-    });
+    }).render(el);
     person.set('name', 'TJ');
     assert('TJ' == el.children[0].textContent);
   });
 
   it('should not double set when updating reactive instance', function(done) {
-    var react = reactive(el, person, {
+    var react = reactive(person, {
       adapter: BackboneAdapter
-    });
+    }).render(el);
     react.sub('name', function(val) {
       assert.equal(val, 'TJ');
       done();
@@ -92,18 +92,18 @@ describe('custom adapter', function() {
   });
 
   it('shouldnt update view after being unsubscribed', function() {
-    var react = reactive(el, person, {
+    var react = reactive(person, {
       adapter: BackboneAdapter
-    });
+    }).render(el);
     react.unsub('name');
     person.set('name', 'TJ');
     assert('Matt' == el.children[0].textContent);
   });
 
   it('setting view should update object', function() {
-    var react = reactive(el, person, {
+    var react = reactive(person, {
       adapter: BackboneAdapter
-    });
+    }).render(el);
     react.set('name', 'TJ');
     assert('TJ' == el.children[0].textContent);
     assert('TJ' == person.get('name'));

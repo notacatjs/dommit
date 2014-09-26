@@ -9,21 +9,21 @@ describe('text interpolation', function(){
   it('should support initialization', function(){
     var el = domify('<div><a href="/download/{{id}}"><strong>Download</strong> {{file}}</a></div>');
     var user = { id: '1234', file: 'tobi.png' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Download tobi.png' == el.children[0].textContent);
   })
 
   it('should ignore whitespace', function(){
     var el = domify('<div><a href="/download/{{ id }}"><strong>Download</strong> {{ file }}</a></div>');
     var user = { id: '1234', file: 'tobi.png' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Download tobi.png' == el.children[0].textContent);
   })
 
   it('should ignore null values', function(){
     var el = domify('<div>{{ id }}</div>');
     var user = { id: null };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('' === el.textContent);
   })
 
@@ -31,7 +31,7 @@ describe('text interpolation', function(){
     var el = domify('<div><a href="/download/{{id}}"><strong>Download</strong> {{file}}</a></div>');
     var user = { id: '1234', file: 'tobi.png' };
 
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Download tobi.png' == el.children[0].textContent);
 
     view.set('file', 'loki.png');
@@ -41,7 +41,7 @@ describe('text interpolation', function(){
   it('should support multiple properties', function(){
     var el = domify('<div><p>{{first}} {{last}} is a {{species}}</p></div>');
     var pet = { first: 'tobi', last: 'holowaychuk', species: 'ferret' };
-    var view = reactive(el, pet);
+    var view = reactive(pet).render(el);
     assert('tobi holowaychuk is a ferret' == el.children[0].textContent);
   })
 
@@ -49,7 +49,7 @@ describe('text interpolation', function(){
     var el = domify('<p>{{first + " " + last}}</p>');
     var pet = { first: 'tobi', last: 'holowaychuk' };
 
-    var view = reactive(el, pet);
+    var view = reactive(pet).render(el);
     assert('tobi holowaychuk' == el.textContent);
 
     view.set('last', 'ferret');
@@ -65,7 +65,7 @@ describe('text interpolation', function(){
       }
     };
 
-    reactive(el, pet);
+    reactive(pet).render(el);
     assert('first: Loki' == el.textContent);
   })
 
@@ -80,7 +80,7 @@ describe('text interpolation', function(){
       ]
     };
 
-    var view = reactive(el, pet);
+    var view = reactive(pet).render(el);
     assert('first: Loki, last: Jane' == el.textContent);
 
     view.set('siblings', ['Loki', 'Abby']);
@@ -96,7 +96,7 @@ describe('text interpolation', function(){
       last: function(){ return 'the Pet' }
     };
 
-    reactive(el, pet);
+    reactive(pet).render(el);
     assert('name: Loki the Pet' == el.textContent);
   })
 
@@ -113,9 +113,9 @@ describe('text interpolation', function(){
       casual: function(){ return pet.first() + ' ' + pet.last() }
     }
 
-    reactive(el, pet, {
+    reactive(pet, {
       delegate: view
-    });
+    }).render(el);
 
     assert.equal('name: Loki the Pet', el.textContent);
   })
@@ -123,23 +123,23 @@ describe('text interpolation', function(){
   it('should support the root element', function(){
     var el = domify('<p>Hello {{name}}</a>');
     var user = { name: 'Tobi' };
-    reactive(el, user);
+    reactive(user).render(el);
     assert('Hello Tobi' == el.textContent);
   })
 
   it('should support calling a property as a function', function(){
     var model = { name: { first: 'Some Really Long Name' } };
-    var view = reactive('<p>Hello {{name.first.slice(0,6)}}</p>', model);
+    var view = reactive(model).render('<p>Hello {{name.first.slice(0,6)}}</p>');
     assert('Hello Some R' == view.el.textContent);
 
     var model = { name: 'Some Really Long Name' };
-    var view = reactive('<p>Hello {{name.slice(0,4)}}</p>', model);
+    var view = reactive(model).render('<p>Hello {{name.slice(0,4)}}</p>');
     assert('Hello Some' == view.el.textContent);
   })
 
   it('should support setting base property', function(){
     var model = { name: { first: 'foobar' } };
-    var view = reactive('<p>{{name.first}}</p>', model);
+    var view = reactive(model).render('<p>{{name.first}}</p>');
     assert('foobar' == view.el.textContent);
 
     view.set('name', { first: 'baz' });

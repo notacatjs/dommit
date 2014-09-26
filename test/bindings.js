@@ -8,14 +8,12 @@ var reactive = require('../');
 describe('reactive.bind(name, fn)', function(){
   it('should define a new binding', function(done){
     var el = domify('<div><h1 data-editable="/item/12">Title</h1></div>');
-    var react = reactive(el, {}, {
-      bindings: {
-        'data-editable': function(el, url){
-          el.setAttribute('contenteditable', 'true');
-          assert('/item/12' == url);
-        }
-      }
-    });
+    var react = reactive()
+      .bind('data-editable', function(el, url){
+        el.setAttribute('contenteditable', 'true');
+        assert('/item/12' == url);
+      })
+      .render(el)
 
     assert(el.children[0].getAttribute('contenteditable'));
     done();
@@ -26,64 +24,56 @@ describe('reactive.bind(name, fn)', function(){
     var model = {
       todos: [ { title: 'test title' } ]
     };
-    var react = reactive(el, model, {
-      bindings: {
-        'lowercase': function(el, prop){
-          var binding = this;
-          assert(prop === 'title');
-          var val = binding.value(prop);
-          assert(val === 'test title');
-          done();
-        }
-      }
-    });
+    var react = reactive(model)
+      .bind('lowercase', function(el, prop){
+        var binding = this;
+        assert(prop === 'title');
+        var val = binding.value(prop);
+        assert(val === 'test title');
+        done();
+      })
+      .render(el)
   });
 })
 
 describe('reactive.bind(obj)', function(){
   it('should define several bindings', function(done){
     var el = domify('<div><h1 hello="world">Title</h1></div>');
-    var react = reactive(el, {}, {
-      bindings: {
-        'hello': function(el, val){
-          assert('world' == val);
-          done();
-        }
-      }
-    });
+    var react = reactive({})
+      .bind('hello', function(el, val){
+        assert('world' == val);
+        done();
+      })
+      .render(el)
   })
 })
 
 describe('Reactive#bind(name, fn)', function(){
   it('should initialize a view-specific binding', function(done){
     var el = domify('<ul><li removable></li></ul>');
-    var view = reactive(el, {}, {
-      bindings: {
-        'removable': function(el){
-          assert('LI' == el.nodeName);
-          done();
-        }
-      }
-    });
+    var view = reactive()
+      .bind('removable', function(el){
+        assert('LI' == el.nodeName);
+        done();
+      })
+      .render(el)
   })
 
   it('should support root-level bindings', function(done){
     var el = domify('<ul removable><li></li></ul>');
-    var view = reactive(el, {}, {
-      bindings: {
-        'removable': function(el){
-          assert('UL' == el.nodeName);
-          done();
-        }
-      }
-    });
+    var view = reactive()
+      .bind('removable', function(el){
+        assert('UL' == el.nodeName);
+        done();
+      })
+      .render(el)
   })
 })
 
 describe('Reactive#bind(name, fn)', function(){
   it('should not use setAttribute to update input\'s value', function(){
     var el = domify('<input data-value="value" />');
-    var view = reactive(el, { value: 'old value' });
+    var view = reactive({ value: 'old value' }).render(el);
     view.el.value = 'old value';
 
     assert(el.value == 'old value');
@@ -93,14 +83,14 @@ describe('Reactive#bind(name, fn)', function(){
 
   it('should not use setAttribute to update textarea\'s value', function(){
     var el = domify('<textarea data-value="value"></textarea>');
-    var view = reactive(el, { value: 'old value' });
+    var view = reactive({ value: 'old value' }).render(el);
     view.set('value', 'value');
     assert(el.value == 'value');
   })
 
   it('should change value of `.value` to update textarea\'s text content', function(){
     var el = domify('<textarea data-text="value"></textarea>');
-    var view = reactive(el, { value: 'old value' });
+    var view = reactive({ value: 'old value' }).render(el);
     view.set('value', 'value');
     assert(el.value == 'value');
   })

@@ -10,14 +10,14 @@ describe('reactive(el, obj)', function(){
   it('should set values on initialization', function(){
     var el = domify('<div><p data-text="name"></p></div>');
     var user = { name: 'Tobi' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Tobi' == el.children[0].textContent);
   })
 
   it('should implicitly domify on initialization', function(){
     var tmpl = '<p data-text="name"></p>';
     var user = { name: 'Tobi' };
-    var view = reactive(tmpl, user);
+    var view = reactive(user).render(tmpl);
     var el = view.el;
     assert('Tobi' == el.textContent);
   })
@@ -25,7 +25,7 @@ describe('reactive(el, obj)', function(){
   it('should work with multiple bindings', function(){
     var el = domify('<div><span data-text="first"></span><span data-text="last"></span></div>');
     var user = { first: 'Tobi', last: 'Ferret' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Tobi' == el.children[0].textContent);
     assert('Ferret' == el.children[1].textContent);
   })
@@ -38,7 +38,7 @@ describe('reactive(el, obj)', function(){
       first: function(){ return this._first }
     };
 
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
 
     assert('Tobi' == el.children[0].textContent);
   });
@@ -58,9 +58,9 @@ describe('reactive(el, obj)', function(){
       }
     };
 
-    var view = reactive(el, user, {
+    var view = reactive(user, {
       delegate: delegate
-    });
+    }).render(el);
 
     assert('Tobi Ferret' == el.children[0].textContent);
   })
@@ -75,19 +75,19 @@ describe('reactive(el, obj)', function(){
       }
     };
 
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Tobi Ferret' == el.textContent);
   })
 
   it('should support deeply nested properties', function(){
     var model = { foo: { bar: { baz: { rofl: 'ok' } } } };
-    var view = reactive(domify('<div>{{ foo.bar.baz.rofl }}</div>'), model);
+    var view = reactive(model).render(domify('<div>{{ foo.bar.baz.rofl }}</div>'));
     assert('ok' == view.el.textContent);
   })
 
   it('should support falsey properties', function(){
     var model = { zero: 0, nil: null, empty: '' };
-    var view = reactive(domify('<div class="{{empty}}">{{zero}}</div>'), model);
+    var view = reactive(model).render(domify('<div class="{{empty}}">{{zero}}</div>'));
     assert('0' === view.el.textContent);
     assert('' === view.el.getAttribute('class'));
     assert(null === view.get('nil'));
@@ -97,16 +97,16 @@ describe('reactive(el, obj)', function(){
   })
 
   it('should not fail for undefined properties', function(){
-    var view = reactive(domify('<div>{{ foo }}</div>'), {});
+    var view = reactive().render(domify('<div>{{ foo }}</div>'));
     assert.equal('', view.el.textContent);
 
-    var view = reactive(domify('<div>{{ foo.bar }}</div>'), {});
+    var view = reactive().render(domify('<div>{{ foo.bar }}</div>'));
     assert.equal('', view.el.textContent);
   });
 
   it('shouldnt update view after being destroyed', function(done) {
     var el = domify('<div><h1 data-text="name"></h1></div>');
-    var react = reactive(el, { name: 'Matt' });
+    var react = reactive({ name: 'Matt' }).render(el);
     assert('Matt' == el.children[0].textContent);
 
     react.on('destroyed', function() {
@@ -130,7 +130,7 @@ describe('.set(prop, value)', function(){
     }
 
     var user = new User('Tobi');
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
 
     assert('Tobi' == el.children[0].textContent);
 
@@ -147,7 +147,7 @@ describe('.set(prop, value)', function(){
     }
 
     var user = new User('Tobi', 24);
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
 
     assert('Tobi' == el.children[0].textContent);
     assert('24' == el.children[1].textContent);
@@ -168,7 +168,7 @@ describe('.set(prop, value)', function(){
   it('should support setting parent property of a nested property', function() {
     var el = domify('<div>{{user.name}} {{user.age}}</div>');
 
-    var view = reactive(el, { user: { name: 'Keith', age: 45 } });
+    var view = reactive({ user: { name: 'Keith', age: 45 } }).render(el);
     assert.equal(el.textContent, 'Keith 45');
 
     view.set('user', { name: 'Seth', age: 50 });
@@ -180,7 +180,7 @@ describe('data-text', function(){
   it('should set element text', function(){
     var el = domify('<div><p data-text="name"></p></div>');
     var user = { name: 'Tobi' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Tobi' == el.children[0].textContent);
   })
 })
@@ -189,19 +189,19 @@ describe('data-html', function(){
   it('should set element html', function(){
     var el = domify('<div><p data-html="name"></p></div>');
     var user = { name: '<strong>Tobi</strong>' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('<strong>tobi</strong>' == el.children[0].innerHTML.toLowerCase());
   })
 
   it('should support computed values', function(){
     var el = domify('<div><ul data-html="fruits"></ul></div>');
     var user = { diet : [ 'apples', 'pears', 'oranges' ] };
-    var view = reactive(el, user, { delegate: {
+    var view = reactive(user, { delegate: {
       fruits : function(fruits) {
         var html = user.diet.map(function(food) { return '<li>' + food + '</li>'; });
         return html.join('');
       }
-    }});
+    }}).render(el);
 
     var items = el.querySelectorAll('li');
     assert(3 == items.length);
@@ -215,33 +215,33 @@ describe('data-visible', function(){
   it('should add .visible when truthy', function(){
     var el = domify('<div><p data-visible="file">Has a file</p></div>');
     var item = { file: 'some.png' };
-    var view = reactive(el, item);
+    var view = reactive(item).render(el);
     assert('visible' == el.children[0].className);
   })
 
   it('should remove .hidden when truthy', function(){
     var el = domify('<div><p data-visible="file" class="file hidden">Has a file</p></div>');
     var item = { file: 'some.png' };
-    var view = reactive(el, item);
+    var view = reactive(item).render(el);
     assert('file visible' == el.children[0].className);
   })
 
   it('should add .hidden when array is empty', function() {
     var tmpl = '<ul data-visible="items.length"><li each="items"></li></ul>';
-    var view = reactive(tmpl, { items: [] });
+    var view = reactive({ items: [] }).render(tmpl);
     assert('hidden' == view.el.className);
   })
 
   it('should add .visible when array is not empty', function() {
     var tmpl = '<ul data-visible="items.length"><li each="items"></li></ul>';
-    var view = reactive(tmpl, { items: [ 'one' ] });
+    var view = reactive({ items: [ 'one' ] }).render(tmpl);
     assert('visible' == view.el.className);
   })
 
   it('should update on array changes', function() {
     var tmpl = '<ul data-visible="items.length"><li each="items">{{this}}</li></ul>';
     var model = { items: [] };
-    var view = reactive(tmpl, model);
+    var view = reactive(model).render(tmpl);
     assert('hidden' == view.el.className);
     model.items.push('one');
     assert('visible' == view.el.className);
@@ -253,26 +253,26 @@ describe('data-hidden', function(){
   it('should add .hidden when truthy', function(){
     var el = domify('<div><p data-hidden="file">Has a file</p></div>');
     var item = { file: 'some.png' };
-    var view = reactive(el, item);
+    var view = reactive(item).render(el);
     assert('hidden' == el.children[0].className);
   })
 
   it('should remove .visible when truthy', function(){
     var el = domify('<div><p data-hidden="file" class="file visible">Has a file</p></div>');
     var item = { file: 'some.png' };
-    var view = reactive(el, item);
+    var view = reactive(item).render(el);
     assert('file hidden' == el.children[0].className);
   })
 
   it('should add .visible when array is empty', function() {
     var tmpl = '<ul data-hidden="items.length"><li each="items"></li></ul>';
-    var view = reactive(tmpl, { items: [] });
+    var view = reactive({ items: [] }).render(tmpl);
     assert('visible' == view.el.className);
   })
 
   it('should add .hidden when array is not empty', function() {
     var tmpl = '<ul data-hidden="items.length"><li each="items"></li></ul>';
-    var view = reactive(tmpl, { items: [ 'one' ] });
+    var view = reactive({ items: [ 'one' ] }).render(tmpl);
     assert('hidden' == view.el.className);
   })
 
@@ -282,14 +282,14 @@ describe('data-checked', function(){
   it('should check when truthy', function(){
     var el = domify('<div><input data-checked="agree" /></div>');
     var user = { agree: true };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('checked' == el.children[0].getAttribute('checked'));
   })
 
   it('should uncheck when falsey', function(){
     var el = domify('<div><input data-checked="agree" /></div>');
     var user = { agree: false };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert(!el.children[0].getAttribute('checked')); // IE8 returns "", modern returns null
   })
 })
@@ -298,7 +298,7 @@ describe('data-append', function(){
   it('should append an element', function(){
     var li = domify('<li>li</li>');
     var el = domify('<div><ul data-append="msg"></ul></div>');
-    var view = reactive(el, {}, { delegate: { msg: li } });
+    var view = reactive({}, { delegate: { msg: li } }).render(el);
     assert(li == el.children[0].children[0]);
   })
 })
@@ -307,14 +307,14 @@ describe('data-replace', function(){
   it('should replace an element', function(){
     var canvas = document.createElement('canvas');
     var el = domify('<div><div data-replace="canvas"></div></div>');
-    var view = reactive(el, {}, { delegate: { canvas: canvas } });
+    var view = reactive({}, { delegate: { canvas: canvas } }).render(el);
     assert(canvas == el.children[0]);
   })
 
   it('should carryover attributes', function(){
     var input = document.createElement('input');
     var el = domify('<div><div data-value="foobar" data-replace="input"></div>');
-    var view = reactive(el, {}, { delegate: { input: input } });
+    var view = reactive({}, { delegate: { input: input } }).render(el);
     assert('foobar' == input.getAttribute('data-value'));
   })
 
@@ -322,7 +322,7 @@ describe('data-replace', function(){
     var input = document.createElement('input');
     input.setAttribute('data-value','barbaz')
     var el = domify('<div><div data-value="foobar" data-replace="input"></div>');
-    var view = reactive(el, {}, { delegate: { input: input } });
+    var view = reactive({}, { delegate: { input: input } }).render(el);
     assert('barbaz' == input.getAttribute('data-value'));
   })
 
@@ -330,7 +330,7 @@ describe('data-replace', function(){
     var toggle = document.createElement('toggle');
     toggle.className = 'toggle';
     var el = domify('<div><div class="integration-toggle" data-replace="toggle"></div></div>');
-    var view = reactive(el, {}, { delegate: { toggle: toggle } });
+    var view = reactive({}, { delegate: { toggle: toggle } }).render(el);
     assert('toggle integration-toggle' == toggle.className);
   })
 })
@@ -339,7 +339,7 @@ describe('data-[attr]', function(){
   it('should set attribute value', function(){
     var el = domify('<div><input type="text" data-value="name" /></div>');
     var user = { name: 'Tobi' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('Tobi' == el.children[0].value);
   })
 })
@@ -347,7 +347,7 @@ describe('data-[attr]', function(){
 describe('data-html', function () {
   it('should replace html content', function(){
     var el = domify('<div data-html="value">text to be replaced</div>');
-    var view = reactive(el, { value: '<div data-html="value"></div>' });
+    var view = reactive({ value: '<div data-html="value"></div>' }).render(el);
     assert(el.innerHTML.toLowerCase() === '<div data-html="value"></div>');
   })
 })

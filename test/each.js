@@ -8,7 +8,7 @@ var reactive = require('../');
 describe('each', function(){
   it('empty should not fail', function(){
     var el = domify('<ul><li each="todos">{{this}}</li></ul>');
-    var view = reactive(el);
+    var view = reactive().render(el);
     assert.equal(el.children.length, 0);
   })
 
@@ -19,7 +19,7 @@ describe('each', function(){
       todos: ['milk', 'cereal', 'apples']
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 3);
     assert.equal(el.children[0].textContent, 'milk');
@@ -34,7 +34,7 @@ describe('each', function(){
       todos: ['candy']
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 1);
     assert.equal(el.children[0].textContent, 'candy');
@@ -51,7 +51,7 @@ describe('each', function(){
     var el = domify('<ul><li each="todos">{{this}}</li></ul>');
 
     var model = { todos: ['candy'] };
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 1);
     assert.equal(el.children[0].textContent, 'candy');
@@ -71,7 +71,7 @@ describe('each', function(){
 
     var array = ['candy'];
     var model = { todos: array };
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 1);
     assert.equal(el.children[0].textContent, 'candy');
@@ -95,7 +95,7 @@ describe('each', function(){
       ]
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 3);
     assert.equal(el.children[0].textContent, 'milk');
@@ -124,7 +124,7 @@ describe('each', function(){
       }
     };
 
-    var r = reactive(el, model, { delegate: view });
+    var r = reactive(model, { delegate: view }).render(el);
 
     el.firstChild.firstChild.click();
   });
@@ -136,7 +136,7 @@ describe('each', function(){
       todos: []
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 0);
 
@@ -154,7 +154,7 @@ describe('each', function(){
       todos: []
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 0);
 
@@ -175,7 +175,7 @@ describe('each', function(){
       todos: ['milk','cereal','apples']
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 3);
 
@@ -208,7 +208,7 @@ describe('each', function(){
       todos: ['milk','cereal','apples']
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 3);
 
@@ -240,7 +240,7 @@ describe('each', function(){
     };
 
     var testArray = model.todos.splice(0,model.todos.length);
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, model.todos.length);
 
@@ -273,7 +273,7 @@ describe('each', function(){
     };
 
     var testArray = model.todos.splice(0,model.todos.length);
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, model.todos.length);
 
@@ -301,7 +301,7 @@ describe('each', function(){
       todos: []
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 0);
 
@@ -337,7 +337,7 @@ describe('each', function(){
       tonots: []
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 0);
 
@@ -365,7 +365,7 @@ describe('each', function(){
       }]
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 1);
     assert.equal(el.children[0].textContent, 'milk');
@@ -382,7 +382,7 @@ describe('each', function(){
       }]
     };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 1);
     assert.equal(el.children[0].textContent, 'milk');
@@ -394,7 +394,7 @@ describe('each', function(){
 
     var model = { nested: { arr: ['a', 'b'] } };
 
-    var view = reactive(el, model);
+    var view = reactive(model).render(el);
 
     assert.equal(el.children.length, 2);
     assert.equal(el.children[0].textContent, 'a');

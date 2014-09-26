@@ -9,21 +9,21 @@ describe('attr interpolation', function(){
   it('should support initialization', function(){
     var el = domify('<a href="/download/{{id}}"></a>');
     var user = { id: '1234' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('/download/1234' == el.getAttribute('href'));
   })
 
   it('should ignore whitespace', function(){
     var el = domify('<a href="/download/{{ id }}"></a>');
     var user = { id: '1234' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
     assert('/download/1234' == el.getAttribute('href'));
   })
 
   it('should react to changes', function(){
     var el = domify('<a href="/download/{{id}}"></a>');
     var user = { id: '1234' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
 
     assert('/download/1234' == el.getAttribute('href'));
 
@@ -34,7 +34,7 @@ describe('attr interpolation', function(){
   it('should support multiple attributes', function(){
     var el = domify('<a href="/download/{{id}}" id="file-{{id}}">Download {{file}}</a>');
     var user = { id: '1234' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
 
     assert('/download/1234' == el.getAttribute('href'));
     assert('file-1234' == el.getAttribute('id'));
@@ -47,7 +47,7 @@ describe('attr interpolation', function(){
   it('should support multiple properties', function(){
     var el = domify('<a href="/download/{{id}}-{{file}}"></a>');
     var user = { id: '1234', file: 'something' };
-    var view = reactive(el, user);
+    var view = reactive(user).render(el);
 
     assert('/download/1234-something' == el.getAttribute('href'));
 
