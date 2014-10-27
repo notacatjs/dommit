@@ -12,8 +12,8 @@
   "license": "MIT",
   "main": "lib/index.js",
   "dependencies": {
-    "carry": "0.0.1",
-    "classes-component": "1.1.3",
+    "carry": "0.0.2",
+    "component-classes": "1.2.2",
     "debug": "0.7.4",
     "domify": "1.2.1",
     "emitter-component": "1.1.1",
@@ -21,7 +21,7 @@
     "query-component": "0.0.1"
   },
   "browser": {
-    "classes": "classes-component",
+    "classes": "component-classes",
     "event": "event-component",
     "query": "query-component",
     "emitter": "emitter-component",
