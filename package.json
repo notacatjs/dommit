@@ -1,7 +1,7 @@
 {
   "name": "dommit",
   "description": "small template engine with data bindings, iteration, and adapters",
-  "version": "1.2.0",
+  "version": "2.0.0-pre0",
   "keywords": [
     "template",
     "engine",
