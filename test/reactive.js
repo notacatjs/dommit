@@ -282,6 +282,15 @@ describe('data-hidden', function(){
     assert('hidden' == view.el.className);
   })
 
+  it('should support interpolation', function() {
+    var tmpl = '<div data-hidden="{{cats && dogs}}"></div>';
+    var view = reactive(tmpl, { cats: true, dogs: false });
+    assert('visible' == view.el.className);
+
+    view.set('dogs', true);
+    assert('hidden' == view.el.className);
+  })
+
 })
 
 describe('data-checked', function(){
