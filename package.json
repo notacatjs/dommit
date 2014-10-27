@@ -9,6 +9,7 @@
     "bind",
     "bindings"
   ],
+  "license": "MIT",
   "main": "lib/index.js",
   "dependencies": {
     "carry": "0.0.1",
