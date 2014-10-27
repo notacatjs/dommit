@@ -127,6 +127,33 @@ describe('reactive(el, obj)', function(){
   });
 })
 
+describe('.appendTo', function() {
+  it('should appendTo a given element', function() {
+    var parent = domify('<div></div>');
+    var view = reactive('<div>foobar</div>');
+    view.appendTo(parent);
+    assert.equal(parent.outerHTML, '<div><div>foobar</div></div>');
+  });
+
+  it('should remove from parent on destroy', function() {
+    var parent = domify('<div></div>');
+    var view = reactive('<div>foobar</div>');
+    view.appendTo(parent);
+    assert.equal(parent.outerHTML, '<div><div>foobar</div></div>');
+
+    view.destroy();
+    assert.equal(parent.outerHTML, '<div></div>');
+  });
+
+  it('should accept string argument', function() {
+    var parent = domify('<div class="test-append-to" style="display: none"></div>');
+    document.body.appendChild(parent);
+    var view = reactive('<div>foobar</div>');
+    view.appendTo('.test-append-to');
+    assert.equal(parent.innerHTML, '<div>foobar</div>');
+  });
+});
+
 describe('.set(prop, value)', function(){
   it('should update bindings', function(){
     var el = domify('<div><p data-text="name"></p></div>');

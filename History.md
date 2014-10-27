@@ -4,6 +4,7 @@
   * preserve "falsey" values for `.get`
   * switch to {{ }} for templates. This is more versatile.
   * fix setting elements for data-replace after initial view created
+  * add appendTo method to appending to elements or queryStrings
 
 # 1.2.0 (2014-07-20)
 

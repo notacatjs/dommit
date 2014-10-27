@@ -147,6 +147,12 @@ Destroy the dommit instance. This will remove all event listeners on the instanc
 
 Fires a `destroyed` event upon completion.
 
+### appendTo(element | string)
+
+Append the view to an html element. Typically this will be done for a parent view to attach it to the body.
+
+If a string is passed, `document.querySelector(string)` will be used to find the element for appending.
+
 ## Model Adapters
 
 Model Adapters provide the interface for Dommit to interact with your model implementation. By using a custom adapter you can support models from [backbone.js](http://backbonejs.org/#Model), [modella](https://github.com/modella/modella), [bamboo](https://github.com/defunctzombie/bamboo), etc..
