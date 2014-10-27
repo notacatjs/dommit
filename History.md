@@ -3,6 +3,7 @@
   * throw when template string contains multiple top level elements
   * preserve "falsey" values for `.get`
   * switch to {{ }} for templates. This is more versatile.
+  * fix setting elements for data-replace after initial view created
 
 # 1.2.0 (2014-07-20)
 

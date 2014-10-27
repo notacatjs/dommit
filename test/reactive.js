@@ -348,6 +348,16 @@ describe('data-replace', function(){
     var view = reactive(el, {}, { delegate: { toggle: toggle } });
     assert('toggle integration-toggle' == toggle.className);
   })
+
+  it('should work after view is created', function(){
+    var toggle = document.createElement('toggle');
+    toggle.className = 'toggle';
+
+    var el = domify('<div><div class="integration-toggle" data-replace="toggle"></div></div>');
+    var view = reactive(el, {});
+    view.set('toggle', toggle);
+    assert('toggle integration-toggle' == toggle.className);
+  })
 })
 
 describe('data-[attr]', function(){
