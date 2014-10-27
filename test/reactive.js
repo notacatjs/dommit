@@ -22,6 +22,12 @@ describe('reactive(el, obj)', function(){
     assert('Tobi' == el.textContent);
   })
 
+  it('should throw when template has more than one top level node', function(){
+    assert.throws(function() {
+      var view = reactive('<div></div><p></p>');
+    });
+  });
+
   it('should work with multiple bindings', function(){
     var el = domify('<div><span data-text="first"></span><span data-text="last"></span></div>');
     var user = { first: 'Tobi', last: 'Ferret' };

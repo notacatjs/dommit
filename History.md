@@ -1,5 +1,6 @@
 # UNRELEASED
 
+  * throw when template string contains multiple top level elements
   * preserve "falsey" values for `.get`
   * switch to {{ }} for templates. This is more versatile.
 
