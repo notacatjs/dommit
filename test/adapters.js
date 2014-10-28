@@ -108,4 +108,31 @@ describe('custom adapter', function() {
     assert('TJ' == el.children[0].textContent);
     assert('TJ' == person.get('name'));
   });
+
+  it('should be inherited by `each`', function() {
+    var model = {
+      people: [
+        Person({ name: 'Matt' }),
+        Person({ name: 'TJ' })
+      ]
+    };
+
+    model.get = function() {
+      return model.people;
+    }
+
+    model.on = function(prop) {}
+
+    var tmpl = '<ul><li each="people">{{name}}</li></ul>';
+    var react = reactive(tmpl, model, {
+      adapter: BackboneAdapter
+    });
+
+    var el = react.el;
+    assert.equal(2, el.children.length);
+    assert.equal('TJ', el.children[1].textContent);
+
+    model.people[1].set('name', 'Tweak');
+    assert.equal('Tweak', el.children[1].textContent);
+  });
 });
