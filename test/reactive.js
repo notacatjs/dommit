@@ -403,3 +403,14 @@ describe('data-html', function () {
     assert(el.innerHTML.toLowerCase() === '<div data-html="value"></div>');
   })
 })
+
+describe('data-disabled', function() {
+  it('should disable the element', function() {
+    var el = domify('<button data-disabled="disable">test</button>');
+    var view = reactive(el, { disable: false });
+
+    assert.equal(el.disabled, false);
+    view.set('disable', true);
+    assert.equal(el.disabled, true);
+  })
+})
