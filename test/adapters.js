@@ -4,6 +4,7 @@ var domify = require('domify');
 var assert = require('assert');
 var Emitter = require('emitter');
 var clone = require('clone');
+var raf = require('raf');
 
 var reactive = require('../');
 var adapter = clone(reactive.adapter);
@@ -77,7 +78,10 @@ describe('custom adapter', function() {
       adapter: BackboneAdapter
     });
     person.set('name', 'TJ');
-    assert('TJ' == el.children[0].textContent);
+
+    raf(function() {
+      assert('TJ' == el.children[0].textContent);
+    });
   });
 
   it('should not double set when updating reactive instance', function(done) {
@@ -128,11 +132,13 @@ describe('custom adapter', function() {
       adapter: BackboneAdapter
     });
 
-    var el = react.el;
-    assert.equal(2, el.children.length);
-    assert.equal('TJ', el.children[1].textContent);
+    raf(function() {
+      var el = react.el;
+      assert.equal(2, el.children.length);
+      assert.equal('TJ', el.children[1].textContent);
 
-    model.people[1].set('name', 'Tweak');
-    assert.equal('Tweak', el.children[1].textContent);
+      model.people[1].set('name', 'Tweak');
+      assert.equal('Tweak', el.children[1].textContent);
+    });
   });
 });
