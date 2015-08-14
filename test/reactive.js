@@ -322,17 +322,26 @@ describe('data-hidden', function(){
 
 describe('data-checked', function(){
   it('should check when truthy', function(){
-    var el = domify('<div><input data-checked="agree" /></div>');
+    var el = domify('<div><input type="checkbox" data-checked="agree" /></div>');
     var user = { agree: true };
     var view = reactive(el, user);
     assert('checked' == el.children[0].getAttribute('checked'));
+    assert(el.children[0].checked);
   })
 
   it('should uncheck when falsey', function(){
-    var el = domify('<div><input data-checked="agree" /></div>');
+    var el = domify('<div><input type="checkbox" data-checked="agree" /></div>');
     var user = { agree: false };
     var view = reactive(el, user);
+    assert(!el.children[0].checked);
+
+    // pretend that user clicked the checkbox
+    // this doesn't set the attribute
+    el.children[0].checked = true;
+
+    view.set('agree', false);
     assert(!el.children[0].getAttribute('checked')); // IE8 returns "", modern returns null
+    assert(!el.children[0].checked);
   })
 })
 
